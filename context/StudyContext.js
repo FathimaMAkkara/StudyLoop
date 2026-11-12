@@ -56,6 +56,17 @@ export function StudyProvider({ children }) {
       const clean = name.trim(); if (!clean || subjects.some(s => s.name.toLowerCase() === clean.toLowerCase())) return;
       setSubjects(prev => [...prev, { id: Date.now(), name: clean, code: 'NEW', color: 'blue' }]);
     },
+    deleteSubject(name) {
+    const confirmed = window.confirm(
+        `Are you sure you want to delete ${name}? Its associated tasks and flashcards will also be deleted.`
+    );
+
+    if (!confirmed) return;
+
+    setSubjects(prev => prev.filter(subject => subject.name !== name));
+    setTasks(prev => prev.filter(task => task.subject !== name));
+    setCards(prev => prev.filter(card => card.subject !== name));
+},
     addTask(title, subject, dueDate, priority) {
       if (!title.trim()) return;
       setTasks(prev => [...prev, { id: Date.now(), title: title.trim(), subject, dueDate, priority, done: false }]);

@@ -19,10 +19,75 @@ function Dashboard() {
  </>;
 }
 function Stat({icon,label,value,note,tone}) { return <div className="stat-card"><div className={`stat-icon ${tone}`}>{icon}</div><div className="stat-label">{label}</div><div className="stat-value">{value}</div><div className="stat-note">{note}</div></div>; }
+
 function Subjects() {
- const { subjects, cards, addSubject }=useStudy(); const [name,setName]=useState('');
- return <><SectionTitle eyebrow="YOUR LEARNING LIBRARY" title="My subjects" subtitle="Keep all your courses and revision material organised."/><div className="panel form-panel"><h3>Add a subject</h3><form className="inline-form" onSubmit={e=>{e.preventDefault();addSubject(name);setName('')}}><input value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Database Management Systems"/><button className="primary-btn">＋ Add subject</button></form></div><div className="cards-grid">{subjects.map(s=><div className="subject-card" key={s.id}><div className={`subject-icon large ${s.color}`}>{s.name.slice(0,1)}</div><span className="soft-badge">{s.code}</span><h3>{s.name}</h3><p>{cards.filter(c=>c.subject===s.name).length} flashcards available</p><small>{cards.filter(c=>c.subject===s.name).length} cards available to revise</small></div>)}</div></>;
+  const { subjects, cards, addSubject, deleteSubject } = useStudy();
+  const [name, setName] = useState('');
+
+  return (
+    <>
+      <SectionTitle
+        eyebrow="YOUR LEARNING LIBRARY"
+        title="My subjects"
+        subtitle="Keep all your courses and revision material organised."
+      />
+
+      <div className="panel form-panel">
+        <h3>Add a subject</h3>
+        <form
+          className="inline-form"
+          onSubmit={e => {
+            e.preventDefault();
+            addSubject(name);
+            setName('');
+          }}
+        >
+          <input
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="e.g. Database Management Systems"
+          />
+          <button className="primary-btn" type="submit">
+            ＋ Add subject
+          </button>
+        </form>
+      </div>
+
+      <div className="cards-grid">
+        {subjects.map(s => (
+
+  <div className="subject-card" key={s.id}>
+    <div className={`subject-icon large ${s.color}`}>
+      {s.name.slice(0, 1)}
+    </div>
+
+    <span className="soft-badge">{s.code}</span>
+    <h3>{s.name}</h3>
+
+    <p>
+      {cards.filter(c => c.subject === s.name).length} flashcards available
+    </p>
+
+    <div className="subject-card-bottom">
+      <small>
+        {cards.filter(c => c.subject === s.name).length} cards available to revise
+      </small>
+
+      <button
+        type="button"
+        className="subject-delete-btn"
+        onClick={() => deleteSubject(s.name)}
+      >
+        Delete subject
+      </button>
+    </div>
+  </div>
+))}
+      </div>
+    </>
+  );
 }
+
 function Flashcards() {
  const { cards, subjects, addCard }=useStudy(); const [index,setIndex]=useState(0); const [show,setShow]=useState(false); const [form,setForm]=useState(false); const [subject,setSubject]=useState(subjects[0]?.name||'General'); const [q,setQ]=useState(''); const [a,setA]=useState('');
  const card=cards[index % Math.max(cards.length,1)];
