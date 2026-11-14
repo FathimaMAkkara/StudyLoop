@@ -89,9 +89,148 @@ function Subjects() {
 }
 
 function Flashcards() {
- const { cards, subjects, addCard }=useStudy(); const [index,setIndex]=useState(0); const [show,setShow]=useState(false); const [form,setForm]=useState(false); const [subject,setSubject]=useState(subjects[0]?.name||'General'); const [q,setQ]=useState(''); const [a,setA]=useState('');
- const card=cards[index % Math.max(cards.length,1)];
- return <><SectionTitle eyebrow="ACTIVE RECALL" title="Flashcards" subtitle="Test what you know. Reveal the answer when you're ready." action={<button className="primary-btn" onClick={()=>setForm(!form)}>＋ Create flashcard</button>}/>{form&&<div className="panel form-panel"><h3>New flashcard</h3><form className="stack-form" onSubmit={e=>{e.preventDefault();addCard(subject,q,a);setQ('');setA('');setForm(false);setIndex(cards.length)}}><select value={subject} onChange={e=>setSubject(e.target.value)}>{subjects.map(s=><option key={s.id}>{s.name}</option>)}</select><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Question"/><textarea value={a} onChange={e=>setA(e.target.value)} placeholder="Answer" rows="3"/><button className="primary-btn">Save flashcard</button></form></div>}{card?<div className="flash-wrap"><div className="flash-meta"><span className="soft-badge">{card.subject}</span><span>{index+1} of {cards.length}</span></div><button className="flash-card" onClick={()=>setShow(!show)}><span className="flash-label">{show?'ANSWER':'QUESTION'}</span><strong>{show?card.answer:card.question}</strong><small>Click the card to {show?'see the question':'reveal the answer'}</small></button><div className="flash-controls"><button className="secondary-btn" onClick={()=>{setIndex((index+cards.length-1)%cards.length);setShow(false)}}>← Previous</button><button className="primary-btn" onClick={()=>{setIndex((index+1)%cards.length);setShow(false)}}>Next card →</button></div></div>:<div className="empty-state">No flashcards yet. Create your first one above.</div>}</>;
+  const { cards, subjects, addCard, updateCardRating } = useStudy();
+const revisionCount = cards.filter(
+  card => card.rating === 'Needs Revision'
+).length;
+  const [index, setIndex] = useState(0);
+  const [show, setShow] = useState(false);
+  const [form, setForm] = useState(false);
+  const [subject, setSubject] = useState(subjects[0]?.name || 'General');
+  const [q, setQ] = useState('');
+  const [a, setA] = useState('');
+
+  const card = cards[index % Math.max(cards.length, 1)];
+
+  return (
+    <>
+      <SectionTitle
+        eyebrow="ACTIVE RECALL"
+        title="Flashcards"
+        subtitle="Test what you know. Reveal the answer when you're ready."
+        action={
+          <button className="primary-btn" onClick={() => setForm(!form)}>
+            ＋ Create flashcard
+          </button>
+        }
+      />
+
+      {form && (
+        <div className="panel form-panel">
+          <h3>New flashcard</h3>
+
+          <form
+            className="stack-form"
+            onSubmit={e => {
+              e.preventDefault();
+              addCard(subject, q, a);
+              setQ('');
+              setA('');
+              setForm(false);
+              setIndex(cards.length);
+            }}
+          >
+            <select value={subject} onChange={e => setSubject(e.target.value)}>
+              {subjects.map(s => (
+                <option key={s.id} value={s.name}>{s.name}</option>
+              ))}
+            </select>
+
+            <input
+              value={q}
+              onChange={e => setQ(e.target.value)}
+              placeholder="Question"
+              required
+            />
+
+            <textarea
+              value={a}
+              onChange={e => setA(e.target.value)}
+              placeholder="Answer"
+              rows="3"
+              required
+            />
+
+            <button className="primary-btn" type="submit">
+              Save flashcard
+            </button>
+          </form>
+        </div>
+      )}
+
+      {card ? (
+        <div className="flash-wrap">
+          <div className="panel">
+  <h3>Cards to revise</h3>
+  <h2>{revisionCount}</h2>
+  <p>Flashcards marked Needs Revision</p>
+</div>
+          <div className="flash-meta">
+            <span className="soft-badge">{card.subject}</span>
+            <span>{index + 1} of {cards.length}</span>
+          </div>
+
+          <button className="flash-card" onClick={() => setShow(!show)}>
+            <span className="flash-label">
+              {show ? 'ANSWER' : 'QUESTION'}
+            </span>
+            <strong>{show ? card.answer : card.question}</strong>
+            <small>
+              Click the card to {show ? 'see the question' : 'reveal the answer'}
+            </small>
+          </button>
+
+          <div className="flash-controls">
+            <button
+              className="secondary-btn"
+              onClick={() => {
+                setIndex((index + cards.length - 1) % cards.length);
+                setShow(false);
+              }}
+            >
+              ← Previous
+            </button>
+
+            <button
+              className="primary-btn"
+              onClick={() => {
+                setIndex((index + 1) % cards.length);
+                setShow(false);
+              }}
+            >
+              Next card →
+            </button>
+          </div>
+
+          <div className="panel flash-ratings">
+            <h3>How well did you know this?</h3>
+
+            <div className="flash-rating-buttons">
+              <button type="button" onClick={() => updateCardRating(card.id, 'Easy')}>
+                Easy
+              </button>
+
+              <button type="button" onClick={() => updateCardRating(card.id, 'Difficult')}>
+                Difficult
+              </button>
+
+              <button type="button" onClick={() => updateCardRating(card.id, 'Needs Revision')}>
+                Needs Revision
+              </button>
+            </div>
+
+            <p>
+              Current rating: <strong>{card.rating || 'Not rated'}</strong>
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="empty-state">
+          No flashcards yet. Create your first one above.
+        </div>
+      )}
+    </>
+  );
 }
 function Planner() {
  const {tasks,subjects,addTask,toggleTask}=useStudy();const [title,setTitle]=useState('');const [subject,setSubject]=useState(subjects[0]?.name||'General');const [dueDate,setDueDate]=useState(todayISO());const [priority,setPriority]=useState('Medium');

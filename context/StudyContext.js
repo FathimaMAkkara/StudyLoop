@@ -73,9 +73,27 @@ export function StudyProvider({ children }) {
     },
     toggleTask(id) { setTasks(prev => prev.map(t => t.id === id ? { ...t, done: !t.done } : t)); },
     addCard(subject, question, answer) {
-      if (!question.trim() || !answer.trim()) return;
-      setCards(prev => [...prev, { id: Date.now(), subject, question: question.trim(), answer: answer.trim() }]);
+  if (!question.trim() || !answer.trim()) return;
+
+  setCards(prev => [
+    ...prev,
+    {
+      id: Date.now(),
+      subject,
+      question: question.trim(),
+      answer: answer.trim(),
+      rating: 'Not rated'
     }
+  ]);
+},
+
+updateCardRating(id, rating) {
+  setCards(prev =>
+    prev.map(card =>
+      card.id === id ? { ...card, rating } : card
+    )
+  );
+}
   }), [subjects, tasks, cards, studentName, activeTab, completed]);
   return <StudyContext.Provider value={value}>{children}</StudyContext.Provider>;
 }
