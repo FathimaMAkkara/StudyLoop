@@ -12,19 +12,34 @@ Inspired by the spaced-repetition learning concept used by CleverDeck, listed in
 - Progress overview
 - Shared application state using React Context
 - Responsive layout and realistic mock data
+- Subject deletion
+- Flashcard ratings
+- Revision tracking
 
-## Tech stack
-Next.js App Router, React, JavaScript, CSS and React Context. No backend or external API is used; data is held in client-side React state and resets on refresh.
+## Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **Frontend:** React and JavaScript
+- **Styling:** CSS
+- **State Management:** React Context API
+- **Data Persistence:** Browser localStorage
+
+No backend or external APIs are used. Application data is managed using React Context and persisted in the browser's localStorage.
 
 ## Run locally
+
 1. Install Node.js (LTS).
-2. Open this folder in VS Code.
-3. Open Terminal and run `npm install`.
-4. Run `npm run dev`.
-5. Visit http://localhost:3000.
+2. Clone this repository.
+3. Open the project folder in VS Code.
+4. Open Terminal and run `npm install`.
+5. Run `npm run dev`.
+6. Open the local URL displayed in the terminal (usually http://localhost:3000).
 
 ## Team contributions
-Add the actual names and describe each member's genuine contribution before submission.
+
+- Fathima: Project setup, product documentation, dashboard/subject management and GitHub integration.
+
+- Khadija: Flashcard ratings, revision tracking and related application updates.
 
 ## Important
-This repository is a frontend MVP with sample data, not a production service. Update this README to accurately describe the work completed by your team.
+This repository is a frontend MVP with sample data, not a production service. 
