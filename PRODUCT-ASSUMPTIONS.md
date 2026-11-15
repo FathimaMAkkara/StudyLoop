@@ -1,7 +1,5 @@
 # PRODUCT-ASSUMPTIONS.md 
 
-IMPORTANT: Your faculty says this document must be written by the students without AI-generated content. Do not submit this template unchanged. Discuss the questions with your teammate and write your own answers in your own words.
-
 ## 1. What product are we planning to build?
 An app which helps students in task management, revision and progeress tracking. they can create to-do lists, set deadlines, and update task statuses. They can create flashcards while studying and us ethem for revision. They can see how much owrk they have completed and what is still pending. 
 
